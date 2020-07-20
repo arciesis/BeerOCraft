@@ -1,4 +1,4 @@
-package sample;
+package xyz.louscars;
 
 public class Controller {
 }
