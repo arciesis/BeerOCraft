@@ -20,4 +20,12 @@ public class Hops {
         }
     }
 
+    @Override
+    public String toString() {
+        return "Hops{" +
+                "name='" + name + '\'' +
+                ", alphaAcide=" + alphaAcide +
+                ", type='" + type + '\'' +
+                '}';
+    }
 }

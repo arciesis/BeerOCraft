@@ -21,4 +21,14 @@ public class Malts {
         }
     }
 
+    @Override
+    public String toString() {
+        return "Malts{" +
+                "name='" + name + '\'' +
+                ", ebc=" + ebc +
+                ", lovibond=" + lovibond +
+                ", potentiel=" + potentiel +
+                ", type='" + type + '\'' +
+                '}';
+    }
 }

@@ -14,4 +14,13 @@ public class Yeast {
         if (attenuationApparente > 0 && attenuationApparente <= 100)
                 this.attenuationApparente = attenuationApparente;
     }
+
+    @Override
+    public String toString() {
+        return "Yeast{" +
+                "tempMin=" + tempMin +
+                ", tempMax=" + tempMax +
+                ", attenuationApparente=" + attenuationApparente +
+                '}';
+    }
 }
