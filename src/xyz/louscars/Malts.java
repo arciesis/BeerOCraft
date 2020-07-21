@@ -1,5 +1,6 @@
 package xyz.louscars;
 
+
 public class Malts {
     private String name;
     private int ebc;
@@ -12,7 +13,8 @@ public class Malts {
         this.name = name;
         this.ebc = ebc;
         this.lovibond = lovibond;
-        this.potentiel = potentiel;
+        if (potentiel > 0 && potentiel <= 100)
+            this.potentiel = potentiel;
 
         for (String item : TYPE_POSSIBLE) {
             if (item.trim().equalsIgnoreCase(type)) {
