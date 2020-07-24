@@ -1,7 +1,9 @@
 package xyz.louscars;
 
 
-public class Malts {
+import java.io.Serializable;
+
+public class Malts implements Serializable {
     private String name;
     private int ebc;
     private int lovibond;

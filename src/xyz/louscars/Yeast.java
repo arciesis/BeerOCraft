@@ -1,6 +1,8 @@
 package xyz.louscars;
 
-public class Yeast {
+import java.io.Serializable;
+
+public class Yeast implements Serializable{
     private int tempMin;
     private int tempMax;
     private int attenuationApparente;

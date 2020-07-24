@@ -1,6 +1,8 @@
 package xyz.louscars;
 
-public class Hops {
+import java.io.Serializable;
+
+public class Hops implements Serializable {
 
     private String name;
     private int alphaAcide;
