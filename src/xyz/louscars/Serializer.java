@@ -1,6 +1,6 @@
 package xyz.louscars;
 
-import java.io.FileNotFoundException;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -14,9 +14,30 @@ public class Serializer {
             ObjectOutputStream oos = new ObjectOutputStream(fosMalts);
 
             oos.writeObject(myMalts);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void serializeHops(ArrayList<Hops> myHops){
+        try {
+            FileOutputStream fosHops = new FileOutputStream("Hops.bat");
+            ObjectOutputStream oos = new ObjectOutputStream(fosHops);
+
+            oos.writeObject(myHops);
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+
+    public static void serializeYeast(ArrayList<Yeast> myYeasts){
+        try{
+            FileOutputStream fosYeasts = new FileOutputStream("Yeasts.bat");
+            ObjectOutputStream oos = new ObjectOutputStream(fosYeasts);
+
+            oos.writeObject(myYeasts);
+        } catch (IOException e){
             e.printStackTrace();
         }
     }
