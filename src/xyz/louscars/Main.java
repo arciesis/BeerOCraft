@@ -20,10 +20,9 @@ public class Main extends Application {
 
     public static void main(String[] args) {
 
-        Malts m1 = new Malts("testeur",6,12,70,"grain");
+        Malt m1 = new Malt("testeur",6,12,70,"grain");
         Consumable c = new Consumable();
         c.addMalts(m1);
-        Serializer.serializeMalts(c.getMyMalts());
 
         launch(args);
 

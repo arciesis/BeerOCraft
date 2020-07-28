@@ -3,7 +3,7 @@ package xyz.louscars;
 
 import java.io.Serializable;
 
-public class Malts implements Serializable {
+public class Malt implements Serializable {
     private String name;
     private int ebc;
     private int lovibond;
@@ -11,7 +11,7 @@ public class Malts implements Serializable {
     private String type;
     private static final String[] TYPE_POSSIBLE = {"grain","extrait","sucre","auxiliaire","autre"};
 
-    public Malts(String name, int ebc, int lovibond, int potentiel, String type){
+    public Malt(String name, int ebc, int lovibond, int potentiel, String type){
         this.name = name;
         this.ebc = ebc;
         this.lovibond = lovibond;

@@ -2,7 +2,7 @@ package xyz.louscars;
 
 import java.io.Serializable;
 
-public class Hops implements Serializable {
+public class Hop {
 
     private String name;
     private int alphaAcide;
@@ -10,7 +10,7 @@ public class Hops implements Serializable {
     private String type;
     private static final String[] TYPE_POSSIBLE = {"cones" , "pellets", "pastilles"};
 
-    public Hops(String name, int alphaAcide, String type){
+    public Hop(String name, int alphaAcide, String type){
         this.name = name;
         this.alphaAcide = alphaAcide;
 
