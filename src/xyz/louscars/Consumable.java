@@ -10,10 +10,23 @@ public class Consumable {
     private ArrayList<Yeast> myYeast;
 
     public Consumable() {
-        myMalts = new ArrayList<>();
-        myHops = new ArrayList<>();
-        myYeast = new ArrayList<>();
+
+        if (deserialize("Malts.ser") != null)
+            this.myMalts = deserialize("Malts.ser");
+        else
+            this.myMalts = new ArrayList();
+
+        if (deserialize("Hops.ser") != null)
+            this.myHops = deserialize("Hops.ser");
+        else
+            this.myHops = new ArrayList();
+
+        if (deserialize("Yeasts.ser") != null)
+            this.myYeast = deserialize("Yeast.ser");
+        else
+            this.myYeast = new ArrayList();
     }
+
 
     public ArrayList<Malt> getMyMalts() {
         return myMalts;
@@ -55,12 +68,12 @@ public class Consumable {
         }
     }
 
-    public ArrayList deserialize(String fileName) throws IllegalArgumentException{
+    public ArrayList deserialize(String fileName) throws IllegalArgumentException {
         File file = new File(fileName);
         if (!file.exists())
             throw new IllegalArgumentException("The file name isn't correct");
 
-        try{
+        try {
             FileInputStream fis = new FileInputStream(fileName);
             ObjectInputStream ois = new ObjectInputStream(fis);
 
@@ -70,4 +83,6 @@ public class Consumable {
         }
         return null;
     }
+
+
 }
