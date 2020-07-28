@@ -1,8 +1,6 @@
 package xyz.louscars;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.ArrayList;
 
 public class Consumable {
@@ -41,16 +39,13 @@ public class Consumable {
         myYeast.add(yeast);
     }
 
-    public void serialize(ArrayList myConsumable, String type) throws IllegalArgumentException {
+    public void serialize(ArrayList myConsumable, String fileName) throws IllegalArgumentException {
 
-        if (type.equals("Malts.ser") || type.equals("Hops.ser") || type.equals("Yeasts.ser")) {
-            // do nothing
-        } else {
-            throw new IllegalArgumentException("the type isn't correct");
-        }
+        if (!(fileName.equals("Malts.ser") || fileName.equals("Hops.ser") || fileName.equals("Yeasts.ser")))
+            throw new IllegalArgumentException("the fileName isn't correct");
 
         try {
-            FileOutputStream fos = new FileOutputStream(type);
+            FileOutputStream fos = new FileOutputStream(fileName);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
 
             oos.writeObject(myConsumable);
@@ -58,5 +53,21 @@ public class Consumable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public ArrayList deserialize(String fileName) throws IllegalArgumentException{
+        File file = new File(fileName);
+        if (!file.exists())
+            throw new IllegalArgumentException("The file name isn't correct");
+
+        try{
+            FileInputStream fis = new FileInputStream(fileName);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+
+            return (ArrayList) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

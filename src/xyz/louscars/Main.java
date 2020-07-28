@@ -24,6 +24,9 @@ public class Main extends Application {
         Consumable c = new Consumable();
         c.addMalts(m1);
 
+        c.serialize(c.getMyMalts(), "Malts.ser");
+        System.out.println(c.deserialize("Malts.ser"));
+
         launch(args);
 
 
