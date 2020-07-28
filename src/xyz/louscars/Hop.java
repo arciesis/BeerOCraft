@@ -1,6 +1,7 @@
 package xyz.louscars;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Hop {
 
@@ -29,5 +30,20 @@ public class Hop {
                 ", alphaAcide=" + alphaAcide +
                 ", type='" + type + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Hop)) return false;
+        Hop hop = (Hop) o;
+        return alphaAcide == hop.alphaAcide &&
+                name.equals(hop.name) &&
+                type.equals(hop.type);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, alphaAcide, type);
     }
 }

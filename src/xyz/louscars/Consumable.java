@@ -14,17 +14,17 @@ public class Consumable {
         if (deserialize("Malts.ser") != null)
             this.myMalts = deserialize("Malts.ser");
         else
-            this.myMalts = new ArrayList();
+            this.myMalts = new ArrayList<>();
 
         if (deserialize("Hops.ser") != null)
             this.myHops = deserialize("Hops.ser");
         else
-            this.myHops = new ArrayList();
+            this.myHops = new ArrayList<>();
 
         if (deserialize("Yeasts.ser") != null)
             this.myYeast = deserialize("Yeast.ser");
         else
-            this.myYeast = new ArrayList();
+            this.myYeast = new ArrayList<>();
     }
 
 
@@ -52,7 +52,7 @@ public class Consumable {
         myYeast.add(yeast);
     }
 
-    public void serialize(ArrayList myConsumable, String fileName) throws IllegalArgumentException {
+    public void serialize(ArrayList<Malt> myConsumable, String fileName) throws IllegalArgumentException {
 
         if (!(fileName.equals("Malts.ser") || fileName.equals("Hops.ser") || fileName.equals("Yeasts.ser")))
             throw new IllegalArgumentException("the fileName isn't correct");
@@ -83,6 +83,5 @@ public class Consumable {
         }
         return null;
     }
-
 
 }

@@ -1,20 +1,20 @@
 package xyz.louscars;
 
-import java.io.Serializable;
+import java.util.Objects;
 
 public class Yeast {
     private int tempMin;
     private int tempMax;
-    private int attenuationApparente;
+    private int apparentAttenuation;
 
-    public Yeast(int tempMin, int tempMax, int attenuationApparente){
+    public Yeast(int tempMin, int tempMax, int apparentAttenuation){
         if (tempMin < tempMax){
             this.tempMin = tempMin;
             this.tempMax = tempMax;
         }
 
-        if (attenuationApparente > 0 && attenuationApparente <= 100)
-                this.attenuationApparente = attenuationApparente;
+        if (apparentAttenuation > 0 && apparentAttenuation <= 100)
+                this.apparentAttenuation = apparentAttenuation;
     }
 
     @Override
@@ -22,7 +22,22 @@ public class Yeast {
         return "Yeast{" +
                 "tempMin=" + tempMin +
                 ", tempMax=" + tempMax +
-                ", attenuationApparente=" + attenuationApparente +
+                ", attenuationApparente=" + apparentAttenuation +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Yeast)) return false;
+        Yeast yeast = (Yeast) o;
+        return tempMin == yeast.tempMin &&
+                tempMax == yeast.tempMax &&
+                apparentAttenuation == yeast.apparentAttenuation;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(tempMin, tempMax, apparentAttenuation);
     }
 }

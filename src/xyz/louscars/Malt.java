@@ -2,21 +2,22 @@ package xyz.louscars;
 
 
 import java.io.Serializable;
+import java.util.Objects;
 
-public class Malt implements Serializable {
+public class Malt{
     private String name;
     private int ebc;
     private int lovibond;
-    private int potentiel;
+    private int potential;
     private String type;
     private static final String[] TYPE_POSSIBLE = {"grain","extrait","sucre","auxiliaire","autre"};
 
-    public Malt(String name, int ebc, int lovibond, int potentiel, String type){
+    public Malt(String name, int ebc, int lovibond, int potential, String type){
         this.name = name;
         this.ebc = ebc;
         this.lovibond = lovibond;
-        if (potentiel > 0 && potentiel <= 100)
-            this.potentiel = potentiel;
+        if (potential > 0 && potential <= 100)
+            this.potential = potential;
 
         for (String item : TYPE_POSSIBLE) {
             if (item.trim().equalsIgnoreCase(type)) {
@@ -31,8 +32,25 @@ public class Malt implements Serializable {
                 "name='" + name + '\'' +
                 ", ebc=" + ebc +
                 ", lovibond=" + lovibond +
-                ", potentiel=" + potentiel +
+                ", potentiel=" + potential +
                 ", type='" + type + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Malt)) return false;
+        Malt malt = (Malt) o;
+        return ebc == malt.ebc &&
+                lovibond == malt.lovibond &&
+                potential == malt.potential &&
+                name.equals(malt.name) &&
+                type.equals(malt.type);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, ebc, lovibond, potential, type);
     }
 }
