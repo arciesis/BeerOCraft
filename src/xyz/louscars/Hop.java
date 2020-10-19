@@ -1,10 +1,13 @@
 package xyz.louscars;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class Hop {
+public class Hop implements Serializable {
 
+    private  static  final  long serialVersionUID = 19874398745985L;
     private String name;
     private int alphaAcide;
     //private int uua;
@@ -22,6 +25,14 @@ public class Hop {
             }
         }
     }
+
+
+//    private  void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+//        this.name = ois.readUTF();
+//        this.alphaAcide = ois.readInt();
+//        this.type = ois.readUTF();
+//    }
+
 
     @Override
     public String toString() {

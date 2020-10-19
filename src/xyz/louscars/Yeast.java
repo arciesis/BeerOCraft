@@ -1,8 +1,11 @@
 package xyz.louscars;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Yeast {
+public class Yeast implements Serializable {
+
+    private  static  final  long serialVersionUID = 129874987598745L;
     private int tempMin;
     private int tempMax;
     private int apparentAttenuation;

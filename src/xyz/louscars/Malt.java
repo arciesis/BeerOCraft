@@ -1,10 +1,12 @@
 package xyz.louscars;
 
-
 import java.io.Serializable;
 import java.util.Objects;
 
-public class Malt{
+
+public class Malt implements Serializable {
+
+    private  static  final  long serialVersionUID = 18273654748474L;
     private String name;
     private int ebc;
     private int lovibond;

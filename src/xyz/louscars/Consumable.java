@@ -11,18 +11,23 @@ public class Consumable {
 
     public Consumable() {
 
-        if (deserialize("Malts.ser") != null)
+        File malts = new File("Malts.ser");
+        File hops = new File("Hops.ser");
+        File yeasts = new File("Yeasts.ser");
+
+
+        if (malts.exists())
             this.myMalts = deserialize("Malts.ser");
         else
             this.myMalts = new ArrayList<>();
 
-        if (deserialize("Hops.ser") != null)
+        if (hops.exists())
             this.myHops = deserialize("Hops.ser");
         else
             this.myHops = new ArrayList<>();
 
-        if (deserialize("Yeasts.ser") != null)
-            this.myYeast = deserialize("Yeast.ser");
+        if (yeasts.exists())
+            this.myYeast = deserialize("Yeasts.ser");
         else
             this.myYeast = new ArrayList<>();
     }
@@ -48,11 +53,11 @@ public class Consumable {
         myMalts.add(malts);
     }
 
-    public void addMalts(Yeast yeast) {
+    public void addYeast(Yeast yeast) {
         myYeast.add(yeast);
     }
 
-    public void serialize(ArrayList<Malt> myConsumable, String fileName) throws IllegalArgumentException {
+    public void serialize(ArrayList myConsumable, String fileName) throws IllegalArgumentException {
 
         if (!(fileName.equals("Malts.ser") || fileName.equals("Hops.ser") || fileName.equals("Yeasts.ser")))
             throw new IllegalArgumentException("the fileName isn't correct");
@@ -69,15 +74,16 @@ public class Consumable {
     }
 
     public ArrayList deserialize(String fileName) throws IllegalArgumentException {
-        File file = new File(fileName);
-        if (!file.exists())
-            throw new IllegalArgumentException("The file name isn't correct");
+
 
         try {
             FileInputStream fis = new FileInputStream(fileName);
             ObjectInputStream ois = new ObjectInputStream(fis);
 
-            return (ArrayList) ois.readObject();
+            ArrayList al = (ArrayList) ois.readObject();
+            ois.close();
+
+            return al;
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
