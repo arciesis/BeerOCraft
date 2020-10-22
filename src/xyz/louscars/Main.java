@@ -22,7 +22,7 @@ public class Main extends Application {
 
         Malt m1 = new Malt("testeur",6,12,70,"grain");
         Hop h1 = new Hop("test", 15, "cones");
-        Yeast y1 = new Yeast(22,26,70);
+        Yeast y1 = new Yeast("testun",22,26,70);
         Consumable c = new Consumable();
         c.addMalts(m1);
         c.addYeast(y1);
@@ -36,6 +36,14 @@ public class Main extends Application {
         System.out.println(c.deserialize("Malts.ser"));
         System.out.println(c.deserialize("Hops.ser"));
         System.out.println(c.deserialize("Yeasts.ser"));
+
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 
 
         launch(args);

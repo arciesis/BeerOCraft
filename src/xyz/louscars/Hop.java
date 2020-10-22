@@ -27,13 +27,6 @@ public class Hop implements Serializable {
     }
 
 
-//    private  void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
-//        this.name = ois.readUTF();
-//        this.alphaAcide = ois.readInt();
-//        this.type = ois.readUTF();
-//    }
-
-
     @Override
     public String toString() {
         return "Hops{" +

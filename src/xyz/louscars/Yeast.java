@@ -6,11 +6,15 @@ import java.util.Objects;
 public class Yeast implements Serializable {
 
     private  static  final  long serialVersionUID = 129874987598745L;
+    private String name;
     private int tempMin;
     private int tempMax;
     private int apparentAttenuation;
 
-    public Yeast(int tempMin, int tempMax, int apparentAttenuation){
+
+    public Yeast(String name, int tempMin, int tempMax, int apparentAttenuation){
+        this.name = name;
+
         if (tempMin < tempMax){
             this.tempMin = tempMin;
             this.tempMax = tempMax;
