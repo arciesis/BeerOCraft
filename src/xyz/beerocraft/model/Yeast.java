@@ -1,4 +1,4 @@
-package xyz.louscars;
+package xyz.beerocraft.model;
 
 import java.io.Serializable;
 import java.util.Objects;

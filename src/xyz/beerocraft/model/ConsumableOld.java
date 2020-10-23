@@ -1,33 +1,33 @@
-package xyz.louscars;
+package xyz.beerocraft.model;
 
 import java.io.*;
 import java.util.ArrayList;
 
-public class Consumable {
+public class ConsumableOld {
 
     private ArrayList<Malt> myMalts;
     private ArrayList<Hop> myHops;
     private ArrayList<Yeast> myYeast;
 
-    public Consumable() {
+    public ConsumableOld() {
 
-        File malts = new File("Malts.ser");
-        File hops = new File("Hops.ser");
-        File yeasts = new File("Yeasts.ser");
+        File malts = new File("../Malts.ser");
+        File hops = new File("../Hops.ser");
+        File yeasts = new File("../Yeasts.ser");
 
 
         if (malts.exists())
-            this.myMalts = deserialize("Malts.ser");
+            this.myMalts = deserialize("../Malts.ser");
         else
             this.myMalts = new ArrayList<>();
 
         if (hops.exists())
-            this.myHops = deserialize("Hops.ser");
+            this.myHops = deserialize("../Hops.ser");
         else
             this.myHops = new ArrayList<>();
 
         if (yeasts.exists())
-            this.myYeast = deserialize("Yeasts.ser");
+            this.myYeast = deserialize("../Yeasts.ser");
         else
             this.myYeast = new ArrayList<>();
     }
