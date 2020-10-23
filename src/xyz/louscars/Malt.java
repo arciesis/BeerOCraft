@@ -28,6 +28,26 @@ public class Malt implements Serializable {
         }
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public int getEbc() {
+        return ebc;
+    }
+
+    public int getLovibond() {
+        return lovibond;
+    }
+
+    public int getPotential() {
+        return potential;
+    }
+
+    public String getType() {
+        return type;
+    }
+
     @Override
     public String toString() {
         return "Malts{" +

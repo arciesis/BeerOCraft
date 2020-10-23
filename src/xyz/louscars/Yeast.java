@@ -24,6 +24,22 @@ public class Yeast implements Serializable {
                 this.apparentAttenuation = apparentAttenuation;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public int getTempMin() {
+        return tempMin;
+    }
+
+    public int getTempMax() {
+        return tempMax;
+    }
+
+    public int getApparentAttenuation() {
+        return apparentAttenuation;
+    }
+
     @Override
     public String toString() {
         return "Yeast{" +

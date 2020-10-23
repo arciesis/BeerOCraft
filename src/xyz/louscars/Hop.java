@@ -27,6 +27,18 @@ public class Hop implements Serializable {
     }
 
 
+    public String getName() {
+        return name;
+    }
+
+    public int getAlphaAcide() {
+        return alphaAcide;
+    }
+
+    public String getType() {
+        return type;
+    }
+
     @Override
     public String toString() {
         return "Hops{" +
