@@ -15,16 +15,21 @@ public class Malt implements Serializable {
     private static final String[] TYPE_POSSIBLE = {"grain","extrait","sucre","auxiliaire","autre"};
 
     public Malt(String name, int ebc, int lovibond, int potential, String type){
-        this.name = name;
-        this.ebc = ebc;
-        this.lovibond = lovibond;
-        if (potential > 0 && potential <= 100)
-            this.potential = potential;
+        if (name.length() < 24) {
+            this.name = name;
+            this.ebc = ebc;
+            this.lovibond = lovibond;
+            if (potential > 0 && potential <= 100)
+                this.potential = potential;
 
-        for (String item : TYPE_POSSIBLE) {
-            if (item.trim().equalsIgnoreCase(type)) {
-                this.type = type;
+            for (String item : TYPE_POSSIBLE) {
+                if (item.trim().equalsIgnoreCase(type)) {
+                    this.type = type;
+                }
             }
+        } else {
+            System.out.println("The name is larger than expected");
+
         }
     }
 

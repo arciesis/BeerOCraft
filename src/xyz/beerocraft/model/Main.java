@@ -25,7 +25,7 @@ public class Main extends Application {
 
     public static void main(String[] args) {
 
-        Malt m1 = new Malt("testeur",6,12,70,"grain");
+        Malt m1 = new Malt("testeur 1.0",6,12,70,"grain");
         Hop h1 = new Hop("test", 15, "cones");
         Yeast y1 = new Yeast("testun",22,26,70);
         ConsumableOld c = new ConsumableOld();
