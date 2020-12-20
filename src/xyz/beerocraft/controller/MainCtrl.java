@@ -64,6 +64,8 @@ public class MainCtrl implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Initialisation of the main controller");
 
+
+
         loadMaltsToFermentablesTabListView();
         this.listOfFermentablesTab.setItems(malts);
         this.textfieldSearchMalts.setPromptText("Weyermann");
