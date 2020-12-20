@@ -10,7 +10,7 @@ import java.util.Properties;
 
 public class Consumable {
 
-    private Properties connectToJDBC() {
+    public Properties connectToJDBC() {
         Properties props = new Properties();
 
 
@@ -29,7 +29,7 @@ public class Consumable {
         return props;
     }
 
-    public void addMaltToBD(Malt myMalt) {
+    public void addMaltToDB(Malt myMalt) {
         //connection to the DB
         Properties props = connectToJDBC();
 
@@ -53,6 +53,7 @@ public class Consumable {
                 System.out.println("Malt has been added");
 
             }
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
