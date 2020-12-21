@@ -24,9 +24,9 @@ public class DBHandler {
 
     public DBHandler() throws InvalidStateObjectException{
         System.out.println("Connection to DB ...");
-        launchedConn ++;
 
-        if (maxLaunchedConn < launchedConn) {
+        if (maxLaunchedConn > launchedConn) {
+            launchedConn ++;
 
             Properties props = new Properties();
 
@@ -43,8 +43,8 @@ public class DBHandler {
             }
 
             String url = props.getProperty("jdbc.url");
-            String login = props.getProperty("jddbc.login");
-            String pswd = props.getProperty("jdvc.pswd");
+            String login = props.getProperty("jdbc.login");
+            String pswd = props.getProperty("jdbc.pswd");
 
             try {
                 myConn = DriverManager.getConnection(url, login, pswd);
@@ -52,41 +52,18 @@ public class DBHandler {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+
+            launchedConn ++;
         } else {
-            throw new InvalidStateObjectException("");
+            throw new InvalidStateObjectException("You try to connect to the DB twice without closing it !");
         }
+
+
 
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    public static void onClosedRequestDB(){
+        launchedConn --;
+    }
 
 }

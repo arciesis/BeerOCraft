@@ -14,12 +14,13 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import xyz.beerocraft.model.DBHandler;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.net.URL;
-import java.sql.*;
-import java.util.Properties;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ResourceBundle;
 
 public class MainCtrl implements Initializable {
@@ -59,12 +60,11 @@ public class MainCtrl implements Initializable {
     private ObservableList<String> searchingMalts = FXCollections.observableArrayList();
 
 
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Initialisation of the main controller");
 
-
+        DBHandler dbHandler = new DBHandler();
 
         loadMaltsToFermentablesTabListView();
         this.listOfFermentablesTab.setItems(malts);
@@ -84,51 +84,27 @@ public class MainCtrl implements Initializable {
     }
 
 
-
     @FXML
     public void maltsKeyHasBeenReleased(KeyEvent event) {
 
-
         String letters = textfieldSearchMalts.getText();
-        Properties props = new Properties();
 
-        try (FileInputStream fis = new FileInputStream("/home/arciesis/dev/java/BeerOCraft/src/xyz/beerocraft/conf.properties")) {
-            props.load(fis);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        try (PreparedStatement pstmt = DBHandler.myConn.prepareStatement("SELECT name FROM fermentables WHERE name LIKE ?")) {
+            pstmt.setString(1, letters + "%");
+            ResultSet rs = pstmt.executeQuery();
 
-        try {
-            Class.forName(props.getProperty("jdbc.class"));
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+            this.searchingMalts = null;
+            this.searchingMalts = FXCollections.observableArrayList();
 
-        String url = props.getProperty("jdbc.url");
-        String login = props.getProperty("jdbc.login");
-        String pswd = props.getProperty("jdbc.pswd");
-
-        try (Connection myConn = DriverManager.getConnection(url, login, pswd)) {
-            try (PreparedStatement pstmt = myConn.prepareStatement("SELECT name FROM fermentables WHERE name LIKE ?")){
-                pstmt.setString(1, letters + "%");
-                ResultSet rs = pstmt.executeQuery();
-
-                this.searchingMalts = null;
-                this.searchingMalts = FXCollections.observableArrayList();
-
-                while (rs.next()) {
-                    this.searchingMalts.add(rs.getString(1));
-                    System.out.println("Malts added to listView : " + rs.getString(1));
-                }
-            } catch (SQLException e){
-                e.printStackTrace();
+            while (rs.next()) {
+                this.searchingMalts.add(rs.getString(1));
+                System.out.println("Malts added to listView : " + rs.getString(1));
             }
-
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        if (this.textfieldSearchMalts.getText().equalsIgnoreCase("")){
+        if (this.textfieldSearchMalts.getText().equalsIgnoreCase("")) {
             this.listOfFermentablesTab.setItems(malts);
         } else {
             this.listOfFermentablesTab.setItems(searchingMalts);
@@ -137,37 +113,18 @@ public class MainCtrl implements Initializable {
     }
 
 
-
-    public void loadMaltsToFermentablesTabListView(){
-        Properties props = new Properties();
-
-        try (FileInputStream fis = new FileInputStream("/home/arciesis/dev/java/BeerOCraft/src/xyz/beerocraft/conf.properties")) {
-            props.load(fis);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void loadMaltsToFermentablesTabListView() {
 
         try {
-            Class.forName(props.getProperty("jdbc.class"));
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        String url = props.getProperty("jdbc.url");
-        String login = props.getProperty("jdbc.login");
-        String pswd = props.getProperty("jdbc.pswd");
-        
-
-        try (Connection myConn = DriverManager.getConnection(url, login, pswd)) {
             String query = "SELECT name FROM fermentables";
-            Statement st = myConn.createStatement();
+            Statement st = DBHandler.myConn.createStatement();
             ResultSet rs = st.executeQuery(query);
 
 
-            while(rs.next()){
+            while (rs.next()) {
 
-                 System.out.println(rs.getString(1));
-                 this.malts.add(rs.getString(1));
+                System.out.println(rs.getString(1));
+                this.malts.add(rs.getString(1));
 
             }
         } catch (SQLException e) {
