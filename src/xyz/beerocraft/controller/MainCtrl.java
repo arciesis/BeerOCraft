@@ -1,20 +1,19 @@
 package xyz.beerocraft.controller;
 
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ListView;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import xyz.beerocraft.model.DBHandler;
+import xyz.beerocraft.model.Malt;
 
 import java.net.URL;
 import java.sql.PreparedStatement;
@@ -55,9 +54,26 @@ public class MainCtrl implements Initializable {
     @FXML
     private AnchorPane yeastsTabPane;
 
+    @FXML
+    private TextField maltNameTextField;
+
+    @FXML
+    private TextField maltEBCTextField;
+
+    @FXML
+    private TextField maltLovibondTextField;
+
+    @FXML
+    private TextField maltPotentialTextField;
+
+    @FXML
+    private ComboBox<String> maltTypeComboBox;
+
     private ObservableList<String> malts = FXCollections.observableArrayList();
 
     private ObservableList<String> searchingMalts = FXCollections.observableArrayList();
+
+    ObservableList<String> maltTypeChoices = FXCollections.observableArrayList();
 
 
     @Override
@@ -69,6 +85,8 @@ public class MainCtrl implements Initializable {
         loadMaltsToFermentablesTabListView();
         this.listOfFermentablesTab.setItems(malts);
         this.textfieldSearchMalts.setPromptText("Weyermann");
+
+        maltsMouseClicked();
     }
 
 
@@ -79,8 +97,46 @@ public class MainCtrl implements Initializable {
     }
 
     @FXML
-    void maltsMouseClicked(MouseEvent event) {
+    void maltsMouseClicked() {
+        //String maltName = listOfFermentablesTab.getSelectionModel().getSelectedItems().get(0);
+        //PreparedStatement pstmt = DBHandler.myConn.prepareStatement("SELECT")
+        listOfFermentablesTab.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String oldValue, String newValue) {
+                System.out.println("Selectioned malt : " + newValue);
 
+                try {
+
+                    PreparedStatement pstmt = DBHandler.myConn.prepareStatement("SELECT * FROM fermentables WHERE name LIKE ?");
+                    pstmt.setString(1, newValue);
+
+                    ResultSet rs = pstmt.executeQuery();
+
+
+                    if (maltTypeComboBox.getItems().isEmpty()) {
+
+                        maltTypeChoices.addAll(Malt.TYPE_POSSIBLE);
+                        maltTypeComboBox.getItems().addAll(maltTypeChoices);
+
+                    }
+
+                    while (rs.next()) {
+
+                        maltNameTextField.setText(rs.getString(2));
+                        maltEBCTextField.setText(rs.getString(3));
+                        maltLovibondTextField.setText(rs.getString(4));
+                        maltPotentialTextField.setText(rs.getString(5));
+                        maltTypeComboBox.setPromptText(rs.getString(6));
+
+                    }
+
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
     }
 
 

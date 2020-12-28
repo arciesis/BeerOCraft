@@ -12,7 +12,7 @@ public class Malt implements Serializable {
     private int lovibond;
     private int potential;
     private String type;
-    private static final String[] TYPE_POSSIBLE = {"grain", "extrait", "sucre", "auxiliaire", "autre"};
+    public static final String[] TYPE_POSSIBLE = {"grain", "extract", "sugar", "adjunct", "other"};
 
     public Malt(String name, int ebc, int lovibond, int potential, String type) {
         this.name = name;
