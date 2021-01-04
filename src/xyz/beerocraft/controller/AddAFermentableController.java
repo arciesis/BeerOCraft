@@ -179,7 +179,11 @@ public class AddAFermentableController implements Initializable {
 
     @FXML
     void handleResetButton(ActionEvent event) {
-
+        addAfermentableNameTextField.clear();
+        addAfermentableEBCTextField.clear();
+        addafermentableLovibondTextField.clear();
+        addAFermentablePotentialTextField.clear();
+        addAFermentableTypeComboBox.setValue(null);
     }
 
     private void loadFermentableToComboBoxOnAdd() {
