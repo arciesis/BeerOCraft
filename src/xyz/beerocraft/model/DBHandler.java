@@ -1,3 +1,7 @@
+/**
+ * @author Arciesis https://github.com/arciesis/BeerOCraft/
+ */
+
 package xyz.beerocraft.model;
 
 import xyz.beerocraft.controller.InvalidStateObjectException;
@@ -11,17 +15,33 @@ import java.util.Properties;
 
 public class DBHandler {
 
+    /**
+     * The connection to the DB
+     */
     public static Connection myConn;
 
+    /**
+     * The maximum connection to the db
+     */
     private final int maxLaunchedConn = 1;
 
+    /**
+     * The actual number of connection to the db
+     */
     private static int launchedConn;
 
+    /**
+     * Block that initate the connection to the db at the first launch of the class
+     */
     static {
         launchedConn = 0;
     }
 
-
+    /**
+     * Constructor of the class
+     * @throws InvalidStateObjectException Exception that indicate that the number of connection to the db is higher
+     * than necessary
+     */
     public DBHandler() throws InvalidStateObjectException{
         System.out.println("Connection to DB ...");
 
@@ -62,6 +82,9 @@ public class DBHandler {
 
     }
 
+    /**
+     * Method that count the number of connection to the db
+     */
     public static void onClosedRequestDB(){
         launchedConn --;
     }

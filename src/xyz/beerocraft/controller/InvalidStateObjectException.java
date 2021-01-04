@@ -1,3 +1,7 @@
+/**
+ * @author Arciesis  https://github.com/arciesis/BeerOCraft/
+ */
+
 package xyz.beerocraft.controller;
 
 public class InvalidStateObjectException extends RuntimeException{

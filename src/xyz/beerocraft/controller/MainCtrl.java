@@ -1,3 +1,7 @@
+/**
+ * @author Arciesis https://guthub.com/arciesis/BeerOCraft/
+ */
+
 package xyz.beerocraft.controller;
 
 
@@ -30,58 +34,115 @@ import static xyz.beerocraft.model.Malt.*;
 
 public class MainCtrl implements Initializable {
 
+
+    /**
+     * the tab Pane of the main window
+     */
     @FXML
     private Pane firstPane;
 
+    /**
+     * The tab Pane of the main window
+     */
     @FXML
     private TabPane firstTabPane;
 
+    /**
+     * The fermentable tab of the main window
+     */
     @FXML
     private Tab fermentablesTab;
 
+    /**
+     * The list view that contains oll the fermentables of the db of the main window
+     */
     @FXML
     private ListView<String> listOfFermentablesTab;
 
+    /**
+     * The Search malt text fieldof the main window
+     */
     @FXML
     private TextField textfieldSearchMalts;
 
+    /**
+     * The Hops Tabof the main window
+     */
     @FXML
     private Tab hopsTab;
 
+    /**
+     * The Yeasts tabof the main window
+     */
     @FXML
     private Tab yeastsTab;
 
+    /**
+     * The Hops anchr tab paneof the main window
+     */
     @FXML
     private AnchorPane fermentablesTabAnchorPane;
 
+    /**
+     * the Hops anchor paneof the main window
+     */
     @FXML
     private AnchorPane hopsTabAnchorPane;
 
+    /**
+     * th yeasts tab paneof the main window
+     */
     @FXML
     private AnchorPane yeastsTabPane;
 
+    /**
+     * The Name text fieldof the main window
+     */
     @FXML
     private TextField maltNameTextField;
 
+    /**
+     * The EBC text fieldof the main window
+     */
     @FXML
     private TextField maltEBCTextField;
 
+    /**
+     * The Lovibond text fieldof the main window
+     */
     @FXML
     private TextField maltLovibondTextField;
 
+    /**
+     * The potential text fieldof the main window
+     */
     @FXML
     private TextField maltPotentialTextField;
 
+    /**
+     * The modify buttonof the main window
+     */
     @FXML
     private Button maltModifyButton;
 
+    /**
+     * The add button fermentableof the main window
+     */
     @FXML
     private Button maltAddMaltButton;
 
+    /**
+     * the type combo box of the main window
+     */
     @FXML
     private ComboBox<String> maltTypeComboBox;
 
 
+    /**
+     * Methd that Initialize the main controller
+     * @param url not used
+     * @param resourceBundle not used
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Initialisation of the main controller");
@@ -98,12 +159,18 @@ public class MainCtrl implements Initializable {
     }
 
 
+    /**
+     * Constructor of the main controller
+     */
     public MainCtrl() {
         System.out.println("Initialisation of the window ");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/data/arciesis/dev/java/BeerOCraft/src/resources/MainView.fxml"));
         loader.setController(this);
     }
 
+    /**
+     * Method that load the details of the selectionned fermentable
+     */
     @FXML
     void maltsMouseClicked() {
         //String maltName = listOfFermentablesTab.getSelectionModel().getSelectedItems().get(0);
@@ -141,6 +208,10 @@ public class MainCtrl implements Initializable {
     }
 
 
+    /**
+     * Method that search and clear the list view according thetext typed on the search text field
+     * @param event the event that is listened
+     */
     @FXML
     public void maltsKeyHasBeenReleased(KeyEvent event) {
 
@@ -170,6 +241,9 @@ public class MainCtrl implements Initializable {
     }
 
 
+    /**
+     * Method that load all the malts contained on the db into the list view of the fermentable tab of the main window
+     */
     public void loadMaltsToFermentablesTabListView() {
 
         try {
@@ -190,6 +264,9 @@ public class MainCtrl implements Initializable {
 
     }
 
+    /**
+     * Method that load the type of malt to the combo box of the tab fermentable of the main window
+     */
     private void loadFermentableToComboBox() {
         if (maltTypeComboBox.getItems().isEmpty()) {
 
@@ -199,7 +276,11 @@ public class MainCtrl implements Initializable {
         }
     }
 
-
+    /**
+     * method that handle the add a malt button of the main window
+     * in fact this button create a new window to add a malt properly
+     * @param event the event that is listened
+     */
     @FXML
     void handleAddMaltButton(ActionEvent event) {
 
@@ -217,52 +298,15 @@ public class MainCtrl implements Initializable {
         }
     }
 
-    /*@FXML
-    void handleAddMaltButton(ActionEvent event) {
-        System.out.println("Add fermentable Button clicked");
-
-        try {
-            String querry = "SELECT name FROM fermentables";
-            Statement st = DBHandler.myConn.createStatement();
-            ResultSet rs = st.executeQuery(querry);
-
-            String nameOfNewFermenatble = maltNameTextField.getText();
-            //System.out.println(nameOfNewFermenatble);
-
-            while (rs.next()) {
-                if (rs.getString(1).trim().equalsIgnoreCase(nameOfNewFermenatble)){
-                    System.out.println("Fermentable already exists");
-                    break;
-                }
-            }
-
-            boolean isEBCSelected = maltEBCToggleButton.isSelected();
-
-            float ebc = stringToFloatParser(maltEBCTextField.getText());
-            float lovibond = stringToFloatParser(maltLovibondTextField.getText());
-            float potential = stringToFloatParser(maltPotentialTextField.getText());
-            String type = maltTypeComboBox.getValue();
-
-            if (isEBCSelected) lovibond = ((ebc + 1.2f) / 2.65f);
-            else ebc = (lovibond * 2.65f) - 1.2f;
-
-            Malt m = new Malt(nameOfNewFermenatble,ebc,lovibond,potential,type);
-            Consumable.addMaltToDB(m);
-
-            malts.add(m.getName());
-            malts.sorted()
-
-
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-    }*/
-
+    /**
+     * the method that handle the modify malt button of the nmain window
+     * @param event thta is listened
+     */
     @FXML
     void handleModifyMaltButton(ActionEvent event) {
         System.out.println("Modify fermentable Button clicked");
-
     }
+
 
     /**
      * Test if a String only contains digit
@@ -282,7 +326,11 @@ public class MainCtrl implements Initializable {
         return true;
     }
 
-
+    /**
+     * the method that parse a string nto an Int
+     * @param str the string to parse
+     * @return the parsed int
+     */
     private int stringToIntParser(String str) {
         if (isIntInput(str)) {
             return Integer.parseInt(str);

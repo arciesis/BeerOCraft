@@ -16,6 +16,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
 
+
 import static xyz.beerocraft.model.Malt.maltTypeChoices;
 import static xyz.beerocraft.model.Malt.malts;
 
@@ -25,41 +26,75 @@ public class AddAFermentableController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loadFermentableToComboBoxOnAdd();
-
-
     }
 
+    /**
+     * the name text field of the "Add a fermentable" window
+     */
     @FXML
     private TextField addAfermentableNameTextField;
 
+    /**
+     * the EBC text field of the "Add a fermentable" window
+     */
     @FXML
     private TextField addAfermentableEBCTextField;
 
+    /**
+     * the Lovibond text field of the "Add a fermentable" window
+     */
     @FXML
     private TextField addafermentableLovibondTextField;
 
+    /**
+     * the potential text Field of the "Add a fermentable" window
+     */
     @FXML
     private TextField addAFermentablePotentialTextField;
 
+    /**
+     * the type combo box of the "Add a fermentable" window
+     */
     @FXML
     private ComboBox<String> addAFermentableTypeComboBox;
 
+    /**
+     * the button to add a fermentable of the "Add a fermentable" window
+     */
     @FXML
     private Button addAFermentableAddButton;
 
+    /**
+     * the reset button of the "Add a fermentable" window
+     */
     @FXML
     private Button addaFermentableResetButton;
 
-
+    /**
+     * the EBC toggle button of the "Add a fermentable" window
+     */
     @FXML
     private ToggleButton addAFermentableEBCToggleButton;
 
+    /**
+     * the toglle group of the "Add a fermentable" window
+     * it contains :
+     * - ebc toggle button
+     * -Lovibond toggle button
+     */
     @FXML
     private ToggleGroup maltColorToggleGroup;
 
+    /**
+     * the lovibond toggle  button of the "Add a fermentable" window
+     */
     @FXML
     private ToggleButton addAfermentableLovibondToggleButton;
 
+    /**
+     * the method that handle the button "add a fermentable" of the "Add a fermentable" window
+     * @param event the event taht is listenned
+     */
     @FXML
     void handleAddButton(ActionEvent event) {
         System.out.println("Add fermentable Button clicked");
@@ -177,6 +212,10 @@ public class AddAFermentableController implements Initializable {
         }
     }
 
+    /**
+     * the method that handle the reset button of the "add a fermentable" window
+     * @param event
+     */
     @FXML
     void handleResetButton(ActionEvent event) {
         addAfermentableNameTextField.clear();
@@ -186,6 +225,9 @@ public class AddAFermentableController implements Initializable {
         addAFermentableTypeComboBox.setValue(null);
     }
 
+    /**
+     * the method that load the type of a fermentable to the combo box "type"
+     */
     private void loadFermentableToComboBoxOnAdd() {
         if (addAFermentableTypeComboBox.getItems().isEmpty() && maltTypeChoices.isEmpty())
             maltTypeChoices.addAll(Malt.TYPE_POSSIBLE);
@@ -193,12 +235,22 @@ public class AddAFermentableController implements Initializable {
         addAFermentableTypeComboBox.getItems().addAll(maltTypeChoices);
     }
 
+    /**
+     * the method that parse a string into a float
+     * @param str the strings that need to be parsed
+     * @return the parsed float
+     */
     private float stringToFloatParser(String str) {
         if (isFloatInput(str)) {
             return Float.parseFloat(str);
         } else return -1;
     }
 
+    /**
+     * the method that test if a string can be cparse into a float
+     * @param str the strings to test
+     * @return true if the float is parsable and false if it isn't
+     */
     private boolean isFloatInput(String str) {
         if (str == null || str.trim().equalsIgnoreCase(""))
             return false;

@@ -1,3 +1,7 @@
+/**
+ * @author Arciesis   https://github.com/arciesis/BeerOCraft/
+ */
+
 package xyz.beerocraft.model;
 
 import java.sql.PreparedStatement;
@@ -5,6 +9,10 @@ import java.sql.SQLException;
 
 public class Consumable {
 
+    /**
+     * Method that add a fermentable to the db
+     * @param myMalt the fermentable to add to the db
+     */
     public static void addMaltToDB(Malt myMalt) {
 
         // Ceci est un try with ressources, la connection implementant
@@ -24,6 +32,10 @@ public class Consumable {
     }
 
 
+    /**
+     * Method that add a hops to the db
+     * @param myHop the hops to add to the db
+     */
     public static void addHopsToDB(Hop myHop) {
 
             try (PreparedStatement pstmt = DBHandler.myConn.prepareStatement("INSERT INTO hops(name, alphaAcide, type) VALUES (?,?,?)")) {
@@ -39,6 +51,10 @@ public class Consumable {
             }
     }
 
+    /**
+     * Method that add a yeast to the db
+     * @param myYeast the yeasts to add to the db
+     */
     public static void addYeastToDB(Yeast myYeast) {
             try (PreparedStatement pstmt = DBHandler.myConn.prepareStatement("INSERT INTO yeasts(name, tempMin, tempMax, attenuation) VALUES (?,?,?,?)")) {
                 pstmt.setString(1, myYeast.getName());
