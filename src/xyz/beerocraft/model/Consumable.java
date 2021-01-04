@@ -5,15 +5,15 @@ import java.sql.SQLException;
 
 public class Consumable {
 
-    public void addMaltToDB(Malt myMalt) {
+    public static void addMaltToDB(Malt myMalt) {
 
         // Ceci est un try with ressources, la connection implementant
         // autoclosable, losrque l'on sortira du try la connection sera automatiquement fermee
             try (PreparedStatement pstmt = DBHandler.myConn.prepareStatement("INSERT INTO fermentables( name, ebc, lovibond, potential, type) VALUES (?,?,?,?,?)")) {
                 pstmt.setString(1, myMalt.getName());
-                pstmt.setInt(2, myMalt.getEbc());
-                pstmt.setInt(3, myMalt.getLovibond());
-                pstmt.setInt(4, myMalt.getPotential());
+                pstmt.setFloat(2, myMalt.getEbc());
+                pstmt.setFloat(3, myMalt.getLovibond());
+                pstmt.setFloat(4, myMalt.getPotential());
                 pstmt.setString(5, myMalt.getType());
                 pstmt.executeUpdate();
 
@@ -24,7 +24,7 @@ public class Consumable {
     }
 
 
-    public void addHopsToDB(Hop myHop) {
+    public static void addHopsToDB(Hop myHop) {
 
             try (PreparedStatement pstmt = DBHandler.myConn.prepareStatement("INSERT INTO hops(name, alphaAcide, type) VALUES (?,?,?)")) {
                 pstmt.setString(1, myHop.getName());
@@ -39,7 +39,7 @@ public class Consumable {
             }
     }
 
-    public void addYeastToDB(Yeast myYeast) {
+    public static void addYeastToDB(Yeast myYeast) {
             try (PreparedStatement pstmt = DBHandler.myConn.prepareStatement("INSERT INTO yeasts(name, tempMin, tempMax, attenuation) VALUES (?,?,?,?)")) {
                 pstmt.setString(1, myYeast.getName());
                 pstmt.setInt(2, myYeast.getTempMin());

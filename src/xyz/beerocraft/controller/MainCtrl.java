@@ -4,23 +4,29 @@ package xyz.beerocraft.controller;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import xyz.beerocraft.model.DBHandler;
 import xyz.beerocraft.model.Malt;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
+
+import static xyz.beerocraft.model.Malt.*;
 
 public class MainCtrl implements Initializable {
 
@@ -67,13 +73,13 @@ public class MainCtrl implements Initializable {
     private TextField maltPotentialTextField;
 
     @FXML
+    private Button maltModifyButton;
+
+    @FXML
+    private Button maltAddMaltButton;
+
+    @FXML
     private ComboBox<String> maltTypeComboBox;
-
-    private ObservableList<String> malts = FXCollections.observableArrayList();
-
-    private ObservableList<String> searchingMalts = FXCollections.observableArrayList();
-
-    ObservableList<String> maltTypeChoices = FXCollections.observableArrayList();
 
 
     @Override
@@ -87,6 +93,8 @@ public class MainCtrl implements Initializable {
         this.textfieldSearchMalts.setPromptText("Weyermann");
 
         maltsMouseClicked();
+        loadFermentableToComboBox();
+
     }
 
 
@@ -112,13 +120,6 @@ public class MainCtrl implements Initializable {
 
                     ResultSet rs = pstmt.executeQuery();
 
-
-                    if (maltTypeComboBox.getItems().isEmpty()) {
-
-                        maltTypeChoices.addAll(Malt.TYPE_POSSIBLE);
-                        maltTypeComboBox.getItems().addAll(maltTypeChoices);
-
-                    }
 
                     while (rs.next()) {
 
@@ -149,11 +150,11 @@ public class MainCtrl implements Initializable {
             pstmt.setString(1, letters + "%");
             ResultSet rs = pstmt.executeQuery();
 
-            this.searchingMalts = null;
-            this.searchingMalts = FXCollections.observableArrayList();
+            searchingMalts = null;
+            searchingMalts = FXCollections.observableArrayList();
 
             while (rs.next()) {
-                this.searchingMalts.add(rs.getString(1));
+                searchingMalts.add(rs.getString(1));
                 System.out.println("Malts added to listView : " + rs.getString(1));
             }
         } catch (SQLException e) {
@@ -180,12 +181,111 @@ public class MainCtrl implements Initializable {
             while (rs.next()) {
 
                 System.out.println(rs.getString(1));
-                this.malts.add(rs.getString(1));
+                malts.add(rs.getString(1));
 
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+    }
+
+    private void loadFermentableToComboBox() {
+        if (maltTypeComboBox.getItems().isEmpty()) {
+
+            maltTypeChoices.addAll(Malt.TYPE_POSSIBLE);
+            maltTypeComboBox.getItems().addAll(maltTypeChoices);
+
+        }
+    }
+
+
+    @FXML
+    void handleAddMaltButton(ActionEvent event) {
+
+        Parent root;
+        try {
+            root = FXMLLoader.load(getClass().getResource("/addAFermentable.fxml"));
+            Stage addAFermentablePopUp = new Stage();
+            addAFermentablePopUp.setTitle("Add a fermentable");
+            addAFermentablePopUp.setScene(new Scene(root, 800, 450));
+            addAFermentablePopUp.show();
+            // Hide this current window (if this is what you want)
+            //((Node)(event.getSource())).getScene().getWindow().hide();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*@FXML
+    void handleAddMaltButton(ActionEvent event) {
+        System.out.println("Add fermentable Button clicked");
+
+        try {
+            String querry = "SELECT name FROM fermentables";
+            Statement st = DBHandler.myConn.createStatement();
+            ResultSet rs = st.executeQuery(querry);
+
+            String nameOfNewFermenatble = maltNameTextField.getText();
+            //System.out.println(nameOfNewFermenatble);
+
+            while (rs.next()) {
+                if (rs.getString(1).trim().equalsIgnoreCase(nameOfNewFermenatble)){
+                    System.out.println("Fermentable already exists");
+                    break;
+                }
+            }
+
+            boolean isEBCSelected = maltEBCToggleButton.isSelected();
+
+            float ebc = stringToFloatParser(maltEBCTextField.getText());
+            float lovibond = stringToFloatParser(maltLovibondTextField.getText());
+            float potential = stringToFloatParser(maltPotentialTextField.getText());
+            String type = maltTypeComboBox.getValue();
+
+            if (isEBCSelected) lovibond = ((ebc + 1.2f) / 2.65f);
+            else ebc = (lovibond * 2.65f) - 1.2f;
+
+            Malt m = new Malt(nameOfNewFermenatble,ebc,lovibond,potential,type);
+            Consumable.addMaltToDB(m);
+
+            malts.add(m.getName());
+            malts.sorted()
+
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }*/
+
+    @FXML
+    void handleModifyMaltButton(ActionEvent event) {
+        System.out.println("Modify fermentable Button clicked");
+
+    }
+
+    /**
+     * Test if a String only contains digit
+     *
+     * @param str The String to test
+     * @return True if the String only contains digit
+     */
+    private boolean isIntInput(String str) {
+        if (str == null || str.trim().equalsIgnoreCase(""))
+            return false;
+
+        char c[] = str.toCharArray();
+        for (int i = 0; i < c.length; i++) {
+            if (c[i] < '0' || c[i] > '9')
+                return false;
+        }
+        return true;
+    }
+
+
+    private int stringToIntParser(String str) {
+        if (isIntInput(str)) {
+            return Integer.parseInt(str);
+        } else return -1;
     }
 }

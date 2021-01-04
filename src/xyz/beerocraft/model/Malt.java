@@ -1,5 +1,8 @@
 package xyz.beerocraft.model;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -8,13 +11,19 @@ public class Malt implements Serializable {
 
     private static final long serialVersionUID = 18273654748474L;
     private String name;
-    private int ebc;
-    private int lovibond;
-    private int potential;
+    private float ebc;
+    private float lovibond;
+    private float potential;
     private String type;
     public static final String[] TYPE_POSSIBLE = {"grain", "extract", "sugar", "adjunct", "other"};
 
-    public Malt(String name, int ebc, int lovibond, int potential, String type) {
+    public static ObservableList<String> malts = FXCollections.observableArrayList();
+
+    public static ObservableList<String> searchingMalts = FXCollections.observableArrayList();
+
+    public static ObservableList<String> maltTypeChoices = FXCollections.observableArrayList();
+
+    public Malt(String name, float ebc, float lovibond, float potential, String type) {
         this.name = name;
         this.ebc = ebc;
         this.lovibond = lovibond;
@@ -33,15 +42,15 @@ public class Malt implements Serializable {
         return name;
     }
 
-    public int getEbc() {
+    public float getEbc() {
         return ebc;
     }
 
-    public int getLovibond() {
+    public float getLovibond() {
         return lovibond;
     }
 
-    public int getPotential() {
+    public float getPotential() {
         return potential;
     }
 
