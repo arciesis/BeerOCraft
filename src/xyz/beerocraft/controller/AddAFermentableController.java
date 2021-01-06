@@ -255,12 +255,10 @@ public class AddAFermentableController implements Initializable {
         if (str == null || str.trim().equalsIgnoreCase(""))
             return false;
 
-        char c[] = str.toCharArray();
+        char[] c = str.toCharArray();
         for (int i = 0; i < c.length; i++) {
             if (c[i] < '0' || c[i] > '9') {
-                if (c[i] == '.')
-                    return true;
-                return false;
+                return c[i] == '.';
             }
         }
         return true;

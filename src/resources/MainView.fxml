@@ -46,7 +46,7 @@
             <content>
                   <SplitPane>
                      <items>
-                        <GridPane prefHeight="368.0" prefWidth="600.0">
+                        <GridPane>
                           <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -95,9 +95,14 @@
                                     </Button>
                                     <VBox prefHeight="200.0" prefWidth="100.0">
                                        <children>
-                                          <Button fx:id="maltAddMaltButton" mnemonicParsing="false" onAction="#handleAddMaltButton" text="Add a fermentable" />
+                                          <Button fx:id="maltAddMaltButton1" mnemonicParsing="false" onAction="#handleAddMaltButton" text="Add a fermentable" />
                                        </children>
                                     </VBox>
+                                    <Button fx:id="maltDeleteButton" mnemonicParsing="false" onAction="#handleDeleteButton" text="delete">
+                                       <HBox.margin>
+                                          <Insets left="110.0" />
+                                       </HBox.margin>
+                                    </Button>
                                  </children>
                               </HBox>
                            </children>

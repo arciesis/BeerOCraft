@@ -6,7 +6,7 @@ import java.util.Objects;
 public class Yeast implements Serializable {
 
     private  static  final  long serialVersionUID = 129874987598745L;
-    private String name;
+    private final String name;
     private int tempMin;
     private int tempMax;
     private int apparentAttenuation;

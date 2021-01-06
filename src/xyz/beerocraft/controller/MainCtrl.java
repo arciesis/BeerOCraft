@@ -19,6 +19,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import xyz.beerocraft.model.Consumable;
 import xyz.beerocraft.model.DBHandler;
 import xyz.beerocraft.model.Malt;
 
@@ -132,6 +133,12 @@ public class MainCtrl implements Initializable {
     private Button maltAddMaltButton;
 
     /**
+     * The delete button of the main window
+     */
+    @FXML
+    private Button maltDeleteButton;
+
+    /**
      * the type combo box of the main window
      */
     @FXML
@@ -140,7 +147,8 @@ public class MainCtrl implements Initializable {
 
     /**
      * Methd that Initialize the main controller
-     * @param url not used
+     *
+     * @param url            not used
      * @param resourceBundle not used
      */
     @Override
@@ -210,6 +218,7 @@ public class MainCtrl implements Initializable {
 
     /**
      * Method that search and clear the list view according thetext typed on the search text field
+     *
      * @param event the event that is listened
      */
     @FXML
@@ -279,6 +288,7 @@ public class MainCtrl implements Initializable {
     /**
      * method that handle the add a malt button of the main window
      * in fact this button create a new window to add a malt properly
+     *
      * @param event the event that is listened
      */
     @FXML
@@ -298,13 +308,43 @@ public class MainCtrl implements Initializable {
         }
     }
 
+
+    /**
+     * Method that delete a fermentables of the db
+     *
+     * @param event the event that is listened
+     */
+    @FXML
+    void handleDeleteButton(ActionEvent event) {
+        Alert confirmYouWantToDeleteFermentableAlert = new Alert(Alert.AlertType.INFORMATION, "Delete ?", ButtonType.YES, ButtonType.NO);
+        confirmYouWantToDeleteFermentableAlert.setTitle("Delete this fermentable");
+        confirmYouWantToDeleteFermentableAlert.setContentText("Are you sur you want to delete this fermentable ?");
+        confirmYouWantToDeleteFermentableAlert.showAndWait();
+
+        if (confirmYouWantToDeleteFermentableAlert.getResult() == ButtonType.YES) {
+            System.out.println("remove fermentable confirmed");
+            String name = listOfFermentablesTab.getSelectionModel().getSelectedItem();
+
+            Consumable.deleteMaltFromDB(name);
+            malts.clear();
+            loadMaltsToFermentablesTabListView();
+            listOfFermentablesTab.setItems(malts);
+
+
+        }
+    }
+
+
     /**
      * the method that handle the modify malt button of the nmain window
+     *
      * @param event thta is listened
      */
     @FXML
     void handleModifyMaltButton(ActionEvent event) {
         System.out.println("Modify fermentable Button clicked");
+
+
     }
 
 
@@ -318,7 +358,7 @@ public class MainCtrl implements Initializable {
         if (str == null || str.trim().equalsIgnoreCase(""))
             return false;
 
-        char c[] = str.toCharArray();
+        char[] c = str.toCharArray();
         for (int i = 0; i < c.length; i++) {
             if (c[i] < '0' || c[i] > '9')
                 return false;
@@ -328,6 +368,7 @@ public class MainCtrl implements Initializable {
 
     /**
      * the method that parse a string nto an Int
+     *
      * @param str the string to parse
      * @return the parsed int
      */

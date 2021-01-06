@@ -10,9 +10,9 @@ import java.util.Objects;
 public class Malt implements Serializable {
 
     private static final long serialVersionUID = 18273654748474L;
-    private String name;
-    private float ebc;
-    private float lovibond;
+    private final String name;
+    private final float ebc;
+    private final float lovibond;
     private float potential;
     private String type;
     public static final String[] TYPE_POSSIBLE = {"grain", "extract", "sugar", "adjunct", "other"};

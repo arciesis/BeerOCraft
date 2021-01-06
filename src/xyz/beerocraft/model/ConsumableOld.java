@@ -5,9 +5,9 @@ import java.util.ArrayList;
 
 public class ConsumableOld {
 
-    private ArrayList<Malt> myMalts;
-    private ArrayList<Hop> myHops;
-    private ArrayList<Yeast> myYeast;
+    private final ArrayList<Malt> myMalts;
+    private final ArrayList<Hop> myHops;
+    private final ArrayList<Yeast> myYeast;
 
     public ConsumableOld() {
 

@@ -19,12 +19,12 @@ public class Hop implements Serializable {
     /**
      * the name of the Hop
      */
-    private String name;
+    private final String name;
 
     /**
      * The amount of alpha acid of the hop
      */
-    private int alphaAcide;
+    private final int alphaAcide;
 
     //private int uua;
 
