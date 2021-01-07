@@ -6,8 +6,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import xyz.beerocraft.model.Consumable;
-import xyz.beerocraft.model.DBHandler;
+import xyz.beerocraft.model.ConsumableDAO;
+import xyz.beerocraft.model.DBConnectionHandler;
 import xyz.beerocraft.model.Malt;
 
 import java.net.URL;
@@ -26,6 +26,7 @@ public class AddAFermentableController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loadFermentableToComboBoxOnAdd();
+        dao = new ConsumableDAO();
     }
 
     /**
@@ -92,6 +93,13 @@ public class AddAFermentableController implements Initializable {
     private ToggleButton addAfermentableLovibondToggleButton;
 
     /**
+     * The Object wich handle interaction with the DB
+     */
+    private ConsumableDAO dao;
+
+
+
+    /**
      * the method that handle the button "add a fermentable" of the "Add a fermentable" window
      * @param event the event taht is listenned
      */
@@ -101,7 +109,7 @@ public class AddAFermentableController implements Initializable {
 
         try {
             String querry = "SELECT name FROM fermentables";
-            Statement st = DBHandler.myConn.createStatement();
+            Statement st = DBConnectionHandler.myConn.createStatement();
             ResultSet rs = st.executeQuery(querry);
 
             String nameOfNewFermenatble = addAfermentableNameTextField.getText();
@@ -141,9 +149,9 @@ public class AddAFermentableController implements Initializable {
                                 if (!addAFermentableTypeComboBox.getSelectionModel().isEmpty()) {
 
 
-                                    float ebc = stringToFloatParser(addAfermentableEBCTextField.getText());
-                                    float lovibond = stringToFloatParser(addafermentableLovibondTextField.getText());
-                                    float potential = stringToFloatParser(addAFermentablePotentialTextField.getText());
+                                    float ebc = MainCtrl.stringToFloatParser(addAfermentableEBCTextField.getText());
+                                    float lovibond = MainCtrl.stringToFloatParser(addafermentableLovibondTextField.getText());
+                                    float potential = MainCtrl.stringToFloatParser(addAFermentablePotentialTextField.getText());
                                     String type = addAFermentableTypeComboBox.getValue();
 
 
@@ -152,7 +160,7 @@ public class AddAFermentableController implements Initializable {
 
 
                                     Malt m = new Malt(nameOfNewFermenatble, ebc, lovibond, potential, type);
-                                    Consumable.addMaltToDB(m);
+                                    dao.addMaltToDB(m);
 
                                     malts.add(m.getName());
                                     malts.sorted();
@@ -235,34 +243,7 @@ public class AddAFermentableController implements Initializable {
         addAFermentableTypeComboBox.getItems().addAll(maltTypeChoices);
     }
 
-    /**
-     * the method that parse a string into a float
-     * @param str the strings that need to be parsed
-     * @return the parsed float
-     */
-    private float stringToFloatParser(String str) {
-        if (isFloatInput(str)) {
-            return Float.parseFloat(str);
-        } else return -1;
-    }
 
-    /**
-     * the method that test if a string can be cparse into a float
-     * @param str the strings to test
-     * @return true if the float is parsable and false if it isn't
-     */
-    private boolean isFloatInput(String str) {
-        if (str == null || str.trim().equalsIgnoreCase(""))
-            return false;
-
-        char[] c = str.toCharArray();
-        for (int i = 0; i < c.length; i++) {
-            if (c[i] < '0' || c[i] > '9') {
-                return c[i] == '.';
-            }
-        }
-        return true;
-    }
 
 }
 

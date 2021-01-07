@@ -13,7 +13,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class DBHandler {
+public class DBConnectionHandler {
 
     /**
      * The connection to the DB
@@ -42,7 +42,7 @@ public class DBHandler {
      * @throws InvalidStateObjectException Exception that indicate that the number of connection to the db is higher
      * than necessary
      */
-    public DBHandler() throws InvalidStateObjectException{
+    public DBConnectionHandler() throws InvalidStateObjectException{
         System.out.println("Connection to DB ...");
 
         if (maxLaunchedConn > launchedConn) {

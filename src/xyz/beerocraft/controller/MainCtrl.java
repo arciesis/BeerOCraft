@@ -19,8 +19,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import xyz.beerocraft.model.Consumable;
-import xyz.beerocraft.model.DBHandler;
+import xyz.beerocraft.model.ConsumableDAO;
+import xyz.beerocraft.model.DBConnectionHandler;
 import xyz.beerocraft.model.Malt;
 
 import java.io.IOException;
@@ -144,6 +144,11 @@ public class MainCtrl implements Initializable {
     @FXML
     private ComboBox<String> maltTypeComboBox;
 
+    /**
+     * The Object wich handle interaction with the DB
+     */
+    private ConsumableDAO dao;
+
 
     /**
      * Methd that Initialize the main controller
@@ -155,7 +160,8 @@ public class MainCtrl implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Initialisation of the main controller");
 
-        DBHandler dbHandler = new DBHandler();
+        DBConnectionHandler dbConnectionHandler = new DBConnectionHandler();
+        dao = new ConsumableDAO();
 
         loadMaltsToFermentablesTabListView();
         this.listOfFermentablesTab.setItems(malts);
@@ -163,6 +169,8 @@ public class MainCtrl implements Initializable {
 
         maltsMouseClicked();
         loadFermentableToComboBox();
+
+        maltNameTextField.setDisable(true);
 
     }
 
@@ -180,9 +188,12 @@ public class MainCtrl implements Initializable {
      * Method that load the details of the selectionned fermentable
      */
     @FXML
-    void maltsMouseClicked() {
+    private void maltsMouseClicked() {
         //String maltName = listOfFermentablesTab.getSelectionModel().getSelectedItems().get(0);
         //PreparedStatement pstmt = DBHandler.myConn.prepareStatement("SELECT")
+
+        //TODO refactor en DAO
+
         listOfFermentablesTab.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<>() {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String oldValue, String newValue) {
@@ -190,7 +201,7 @@ public class MainCtrl implements Initializable {
 
                 try {
 
-                    PreparedStatement pstmt = DBHandler.myConn.prepareStatement("SELECT * FROM fermentables WHERE name LIKE ?");
+                    PreparedStatement pstmt = DBConnectionHandler.myConn.prepareStatement("SELECT * FROM fermentables WHERE name LIKE ?");
                     pstmt.setString(1, newValue);
 
                     ResultSet rs = pstmt.executeQuery();
@@ -202,7 +213,7 @@ public class MainCtrl implements Initializable {
                         maltEBCTextField.setText(rs.getString(3));
                         maltLovibondTextField.setText(rs.getString(4));
                         maltPotentialTextField.setText(rs.getString(5));
-                        maltTypeComboBox.setPromptText(rs.getString(6));
+                        maltTypeComboBox.setValue(rs.getString(6));
 
                     }
 
@@ -222,11 +233,11 @@ public class MainCtrl implements Initializable {
      * @param event the event that is listened
      */
     @FXML
-    public void maltsKeyHasBeenReleased(KeyEvent event) {
-
+    private void maltsKeyHasBeenReleased(KeyEvent event) {
+        //TODO refactor vers DAO
         String letters = textfieldSearchMalts.getText();
 
-        try (PreparedStatement pstmt = DBHandler.myConn.prepareStatement("SELECT name FROM fermentables WHERE name LIKE ?")) {
+        try (PreparedStatement pstmt = DBConnectionHandler.myConn.prepareStatement("SELECT name FROM fermentables WHERE name LIKE ?")) {
             pstmt.setString(1, letters + "%");
             ResultSet rs = pstmt.executeQuery();
 
@@ -253,19 +264,19 @@ public class MainCtrl implements Initializable {
     /**
      * Method that load all the malts contained on the db into the list view of the fermentable tab of the main window
      */
-    public void loadMaltsToFermentablesTabListView() {
-
+    private void loadMaltsToFermentablesTabListView() {
+        //TODO refactor vers DAO
         try {
             String query = "SELECT name FROM fermentables";
-            Statement st = DBHandler.myConn.createStatement();
-            ResultSet rs = st.executeQuery(query);
+            Statement st = DBConnectionHandler.myConn.createStatement();
+            try (ResultSet rs = st.executeQuery(query)) {
 
+                while (rs.next()) {
 
-            while (rs.next()) {
+                    System.out.println(rs.getString(1));
+                    malts.add(rs.getString(1));
 
-                System.out.println(rs.getString(1));
-                malts.add(rs.getString(1));
-
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -292,7 +303,7 @@ public class MainCtrl implements Initializable {
      * @param event the event that is listened
      */
     @FXML
-    void handleAddMaltButton(ActionEvent event) {
+    private void handleAddMaltButton(ActionEvent event) {
 
         Parent root;
         try {
@@ -315,7 +326,7 @@ public class MainCtrl implements Initializable {
      * @param event the event that is listened
      */
     @FXML
-    void handleDeleteFermentablesButton(ActionEvent event) {
+    private void handleDeleteFermentablesButton(ActionEvent event) {
         Alert confirmYouWantToDeleteFermentableAlert = new Alert(Alert.AlertType.INFORMATION, "Delete ?", ButtonType.YES, ButtonType.NO);
         confirmYouWantToDeleteFermentableAlert.setTitle("Delete this fermentable");
         confirmYouWantToDeleteFermentableAlert.setContentText("Are you sur you want to delete this fermentable ?");
@@ -326,7 +337,7 @@ public class MainCtrl implements Initializable {
             System.out.println("remove fermentable confirmed");
             String name = listOfFermentablesTab.getSelectionModel().getSelectedItem();
 
-            Consumable.deleteMaltOfDB(name);
+            dao.deleteFermentableOfDB(name);
             malts.clear();
             loadMaltsToFermentablesTabListView();
             listOfFermentablesTab.setItems(malts);
@@ -336,14 +347,75 @@ public class MainCtrl implements Initializable {
 
 
     /**
-     * the method that handle the modify malt button of the nmain window
+     * The method that handle the modify malt button of the main window
      *
-     * @param event thta is listened
+     * @param event that is listened
      */
     @FXML
-    void handleModifyMaltButton(ActionEvent event) {
+    private void handleModifyMaltButton(ActionEvent event) {
         System.out.println("Modify fermentable Button clicked");
 
+        String nameOfTheFermentable = listOfFermentablesTab.getSelectionModel().getSelectedItem();
+        Malt modifiedMalt = dao.selectFermentableFromName(nameOfTheFermentable);
+
+        if (modifiedMalt != null) {
+            String stringEbc = maltEBCTextField.getText();
+            String stringLovibond = maltLovibondTextField.getText();
+            String stringPotential= maltPotentialTextField.getText();
+            String stringType = maltTypeComboBox.getSelectionModel().getSelectedItem();
+
+            if (isFloatInput((stringEbc)) && isFloatInput(stringLovibond) && isFloatInput(stringPotential)) {
+
+                float floatEbc = stringToFloatParser(stringEbc);
+                float floatLovibond = stringToFloatParser(stringLovibond);
+                float floatPotential = stringToFloatParser(stringPotential);
+
+                if (floatPotential >= 0 || floatPotential <= 100) {
+
+                    modifiedMalt.setPotential(floatPotential);
+                    modifiedMalt.setType(stringType);
+
+                    if (floatEbc != dao.getEbcFromDB(modifiedMalt)) {
+                        ;
+                        floatLovibond = (floatEbc + 1.2f) / 2.65f;
+                    } else if (floatLovibond != dao.getLovibondFromDB(modifiedMalt)) {
+                        floatEbc = (floatLovibond * 2.65f) - 1.2f;
+                    }
+
+
+                    modifiedMalt.setEbc(floatEbc);
+                    modifiedMalt.setLovibond(floatLovibond);
+
+                    dao.updateMaltEntry(modifiedMalt);
+
+                    malts.clear();
+                    loadMaltsToFermentablesTabListView();
+                    listOfFermentablesTab.setItems(malts);
+                    listOfFermentablesTab.getSelectionModel().select(nameOfTheFermentable);
+
+                } else {
+
+                    System.out.println("Potential entry not valid");
+
+                    Alert potentialEntryIsNotValidAlert = new Alert(Alert.AlertType.WARNING);
+                    potentialEntryIsNotValidAlert.setTitle("Invalid entry for potential");;
+                    potentialEntryIsNotValidAlert.setContentText("Your potential value is in % so it must be between 0% and 100%");
+                    potentialEntryIsNotValidAlert.showAndWait();
+
+                }
+            } else {
+
+                System.out.println("An Input dosen't match requirement to modify this fermentable");
+
+                Alert inputDosentMatchRequirementAlert = new Alert(Alert.AlertType.WARNING);
+                inputDosentMatchRequirementAlert.setTitle("Input dosen't match requirement");
+                inputDosentMatchRequirementAlert.setContentText("An Input dosen't match requirement.\ne.g. one of the input is not a valid number");
+                inputDosentMatchRequirementAlert.showAndWait();
+            }
+
+        } else {
+            System.out.println("Hmm The name has been modify what can I do ? c'est pour ca qu'il faut que jenbtraite aavec l'id");
+        }
 
     }
 
@@ -354,7 +426,7 @@ public class MainCtrl implements Initializable {
      * @param str The String to test
      * @return True if the String only contains digit
      */
-    private boolean isIntInput(String str) {
+    public static boolean isIntInput(String str) {
         if (str == null || str.trim().equalsIgnoreCase(""))
             return false;
 
@@ -372,9 +444,40 @@ public class MainCtrl implements Initializable {
      * @param str the string to parse
      * @return the parsed int
      */
-    private int stringToIntParser(String str) {
+    public static int stringToIntParser(String str) {
         if (isIntInput(str)) {
             return Integer.parseInt(str);
         } else return -1;
+    }
+
+    /**
+     * the method that parse a string into a float
+     *
+     * @param str the strings that need to be parsed
+     * @return the parsed float
+     */
+    public static float stringToFloatParser(String str) {
+        if (isFloatInput(str)) {
+            return Float.parseFloat(str);
+        } else return -1;
+    }
+
+    /**
+     * the method that test if a string can be cparse into a float
+     *
+     * @param str the strings to test
+     * @return true if the float is parsable and false if it isn't
+     */
+    public static boolean isFloatInput(String str) {
+        if (str == null || str.trim().equalsIgnoreCase(""))
+            return false;
+
+        char[] c = str.toCharArray();
+        for (int i = 0; i < c.length; i++) {
+            if (c[i] < '0' || c[i] > '9') {
+                return c[i] == '.';
+            }
+        }
+        return true;
     }
 }

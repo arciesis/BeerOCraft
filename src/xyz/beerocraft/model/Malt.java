@@ -9,10 +9,10 @@ import java.util.Objects;
 
 public class Malt implements Serializable {
 
-    private static final long serialVersionUID = 18273654748474L;
-    private final String name;
-    private final float ebc;
-    private final float lovibond;
+    //private static final long serialVersionUID = 18273654748474L;
+    private String name;
+    private float ebc;
+    private float lovibond;
     private float potential;
     private String type;
     public static final String[] TYPE_POSSIBLE = {"grain", "extract", "sugar", "adjunct", "other"};
@@ -35,7 +35,14 @@ public class Malt implements Serializable {
                 this.type = type;
             }
         }
+    }
 
+    public Malt() {
+        this.name="";
+        setEbc(0);
+        setLovibond(0);
+        setPotential(0);
+        setType(TYPE_POSSIBLE[0]);
     }
 
     public String getName() {
@@ -56,6 +63,23 @@ public class Malt implements Serializable {
 
     public String getType() {
         return type;
+    }
+
+    public void setEbc(float ebc) {
+        this.ebc = ebc;
+    }
+
+    public void setLovibond(float lovibond) {
+        this.lovibond = lovibond;
+    }
+
+    public void setPotential(float potential) {
+        if (potential >= 0 || potential <= 100)
+            this.potential = potential;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     @Override

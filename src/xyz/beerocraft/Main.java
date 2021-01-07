@@ -13,7 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import xyz.beerocraft.model.DBHandler;
+import xyz.beerocraft.model.DBConnectionHandler;
 
 import java.sql.SQLException;
 
@@ -39,9 +39,9 @@ public class Main extends Application {
             System.out.println("stage is closing");
 
             try {
-                DBHandler.myConn.close();
+                DBConnectionHandler.myConn.close();
                 System.out.println("DB is closed");
-                DBHandler.onClosedRequestDB();
+                DBConnectionHandler.onClosedRequestDB();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
