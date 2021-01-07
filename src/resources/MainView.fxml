@@ -98,7 +98,7 @@
                                           <Button fx:id="maltAddMaltButton1" mnemonicParsing="false" onAction="#handleAddMaltButton" text="Add a fermentable" />
                                        </children>
                                     </VBox>
-                                    <Button fx:id="maltDeleteButton" mnemonicParsing="false" onAction="#handleDeleteButton" text="delete">
+                                    <Button fx:id="maltDeleteButton" mnemonicParsing="false" onAction="#handleDeleteFermentablesButton" text="delete">
                                        <HBox.margin>
                                           <Insets left="110.0" />
                                        </HBox.margin>

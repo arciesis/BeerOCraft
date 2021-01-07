@@ -315,21 +315,21 @@ public class MainCtrl implements Initializable {
      * @param event the event that is listened
      */
     @FXML
-    void handleDeleteButton(ActionEvent event) {
+    void handleDeleteFermentablesButton(ActionEvent event) {
         Alert confirmYouWantToDeleteFermentableAlert = new Alert(Alert.AlertType.INFORMATION, "Delete ?", ButtonType.YES, ButtonType.NO);
         confirmYouWantToDeleteFermentableAlert.setTitle("Delete this fermentable");
         confirmYouWantToDeleteFermentableAlert.setContentText("Are you sur you want to delete this fermentable ?");
         confirmYouWantToDeleteFermentableAlert.showAndWait();
 
         if (confirmYouWantToDeleteFermentableAlert.getResult() == ButtonType.YES) {
+
             System.out.println("remove fermentable confirmed");
             String name = listOfFermentablesTab.getSelectionModel().getSelectedItem();
 
-            Consumable.deleteMaltFromDB(name);
+            Consumable.deleteMaltOfDB(name);
             malts.clear();
             loadMaltsToFermentablesTabListView();
             listOfFermentablesTab.setItems(malts);
-
 
         }
     }

@@ -36,10 +36,8 @@ public class Consumable {
      * Method that delete a fermentables from the db
      *
      * @param name the fermentable to delete
-     * @return true if the item has been deleted and else otherwise
      */
-    public static boolean deleteMaltFromDB(String name) {
-        boolean isDeleted = false;
+    public static void deleteMaltOfDB(String name) {
         try (PreparedStatement pstmt = DBHandler.myConn.prepareStatement("DELETE FROM fermentables WHERE fermentables.name LIKE ?")) {
             pstmt.setString(1, name);
 
@@ -49,7 +47,6 @@ public class Consumable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return isDeleted;
     }
 
     /**
